@@ -51,7 +51,9 @@ checksumPackages() {
 # Check Docker version
 checkDockerVersion() {
   # Get Docker Server version
-  DOCKER_VERSION=$(docker version --format '{{.Server.Version | printf "%.5s" }}')
+  # DOCKER_VERSION=$(docker version --format '{{.Server.Version | printf "%.5s" }}')
+  # Change reference:  Docker version comparison issue #2573
+  DOCKER_VERSION=$(docker version --format '{{.Server.Version | printf "%.9s" }}')
   # Remove dot in Docker version
   DOCKER_VERSION=${DOCKER_VERSION//./}
 
