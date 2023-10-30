@@ -1,0 +1,37 @@
+https://github.com/oraclesean/DataGuard-docker#run-the-build-to-create-the-oracledatbase1930-ee-docker-image
+
+-- stuff to try
+run off a external disk / from a different directory
+
+-- if last attempt fails, abandon and keep on C: per original config
+
+
+
+
+$SCRIPTS_ROOT - set and add a script to run - 
+export SCRIPTS_ROOT=DG_DIR/sql
+
+
+
+-- build image and compose containers
+export ORADATA_VOLUME=~/docker/oracle/oradata
+export DG_DIR=~/docker/oracle/docker-dataguard
+export COMPOSE_YAML=docker-compose.yml
+export DB_VERSION=19.3.0
+export IMAGE_NAME=oracle/database:${DB_VERSION}-ee
+# cp LINUX.X64_193000_db_home.zip $DG_DIR/$DB_VERSION
+cd $DG_DIR
+
+./buildDockerImage.sh -v 19.3.0 -e -i
+
+
+docker-compose up -d
+docker-compose logs -f
+docker-compose down
+docker rmi oracle/database:19.3.0-ee
+docker image prune <<< y
+if [[ "$ORADATA_VOLUME" ]] && [ -d "$ORADATA_VOLUME" ]
+  then rm -Rf $ORADATA_VOLUME/DG*
+fi
+#rm -Rf ~/oradata/DG*
+
